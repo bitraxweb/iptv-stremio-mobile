@@ -896,3 +896,248 @@ video {
     transition-duration: .01ms !important;
   }
 }
+  .notice-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding:
+      calc(20px + env(safe-area-inset-top))
+      18px
+      calc(20px + env(safe-area-inset-bottom));
+
+    background: rgba(5, 3, 10, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 250ms ease,
+      visibility 250ms ease;
+  }
+
+  .notice-modal.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .notice-modal__dialog {
+    position: relative;
+
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+
+    padding: 28px 22px 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 26px;
+
+    color: #ffffff;
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(123, 92, 255, 0.25),
+        transparent 45%
+      ),
+      #171220;
+
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+
+    text-align: center;
+    transform: translateY(24px) scale(0.96);
+    transition: transform 280ms ease;
+  }
+
+  .notice-modal.is-visible .notice-modal__dialog {
+    transform: translateY(0) scale(1);
+  }
+
+  .notice-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+
+    color: #c9c2d8;
+    background: rgba(255, 255, 255, 0.06);
+
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .notice-modal__icon {
+    display: grid;
+    width: 76px;
+    height: 76px;
+    margin: 5px auto 20px;
+    place-items: center;
+
+    border-radius: 23px;
+
+    color: #ffffff;
+    background: linear-gradient(145deg, #8c6cff, #6042db);
+    box-shadow: 0 18px 40px rgba(123, 92, 255, 0.3);
+  }
+
+  .notice-modal__icon svg {
+    width: 38px;
+    height: 38px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .notice-modal__label {
+    display: block;
+    margin-bottom: 8px;
+
+    color: #a995ff;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+  }
+
+  .notice-modal__dialog h2 {
+    margin: 0 0 13px;
+
+    font-size: clamp(22px, 7vw, 29px);
+    line-height: 1.15;
+    letter-spacing: -0.7px;
+  }
+
+  .notice-modal__description {
+    margin: 0;
+
+    color: #bdb5cb;
+
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .notice-modal__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+
+    margin: 22px 0;
+  }
+
+  .notice-modal__stat {
+    min-width: 0;
+    padding: 16px 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 17px;
+
+    background: rgba(255, 255, 255, 0.055);
+  }
+
+  .notice-modal__stat strong {
+    display: block;
+    margin-bottom: 4px;
+
+    color: #ffffff;
+
+    font-size: clamp(20px, 6vw, 25px);
+    line-height: 1;
+  }
+
+  .notice-modal__stat span {
+    color: #948ba5;
+    font-size: 11px;
+  }
+
+  .notice-modal__time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    color: #c7bed6;
+
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .notice-modal__time svg {
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+    stroke: #a995ff;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .notice-modal__button {
+    width: 100%;
+    min-height: 52px;
+
+    border: 0;
+    border-radius: 15px;
+
+    color: #ffffff;
+    background: #7657ee;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow: 0 12px 28px rgba(118, 87, 238, 0.3);
+    cursor: pointer;
+  }
+
+  .notice-modal__button:active {
+    transform: scale(0.98);
+  }
+
+  body.has-open-modal {
+    overflow: hidden;
+  }
+
+  @media (max-width: 360px) {
+    .notice-modal__dialog {
+      padding: 25px 17px 18px;
+      border-radius: 22px;
+    }
+
+    .notice-modal__icon {
+      width: 66px;
+      height: 66px;
+    }
+
+    .notice-modal__stats {
+      gap: 7px;
+    }
+
+    .notice-modal__stat {
+      padding: 14px 7px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .notice-modal,
+    .notice-modal__dialog {
+      transition: none;
+    }
+  }

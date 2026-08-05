@@ -119,10 +119,148 @@
       <p>Reproduce únicamente listas y emisiones que tengas derecho a utilizar.</p>
     </footer>
   </main>
+<div
+  id="loadingNoticeModal"
+  class="notice-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="loadingNoticeTitle"
+  aria-describedby="loadingNoticeDescription"
+  hidden
+>
+  <div class="notice-modal__dialog">
+    <button
+      id="closeLoadingNoticeBtn"
+      class="notice-modal__close"
+      type="button"
+      aria-label="Cerrar aviso"
+    >
+      ×
+    </button>
 
+    <div class="notice-modal__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3v3m0 12v3M3 12h3m12 0h3"/>
+        <path d="m5.64 5.64 2.12 2.12m8.48 8.48 2.12 2.12"/>
+        <path d="m18.36 5.64-2.12 2.12m-8.48 8.48-2.12 2.12"/>
+      </svg>
+    </div>
+
+    <span class="notice-modal__label">ACTUALIZACIÓN DEL CATÁLOGO</span>
+
+    <h2 id="loadingNoticeTitle">
+      Estamos preparando nuevo contenido
+    </h2>
+
+    <p
+      id="loadingNoticeDescription"
+      class="notice-modal__description"
+    >
+      En un lapso máximo de 24 horas se cargarán más de
+      10.000 canales y más de 5.000 películas. Por favor,
+      espera mientras completamos el proceso de carga.
+    </p>
+
+    <div class="notice-modal__stats">
+      <div class="notice-modal__stat">
+        <strong>+10.000</strong>
+        <span>canales</span>
+      </div>
+
+      <div class="notice-modal__stat">
+        <strong>+5.000</strong>
+        <span>películas</span>
+      </div>
+    </div>
+
+    <div class="notice-modal__time">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 2"/>
+      </svg>
+
+      <span>Tiempo estimado: hasta 24 horas</span>
+    </div>
+
+    <button
+      id="acceptLoadingNoticeBtn"
+      class="notice-modal__button"
+      type="button"
+    >
+      Entendido
+    </button>
+  </div>
+</div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script src="script.js"></script>
+
+<script>
+  (() => {
+    "use strict";
+
+    const modal = document.getElementById("loadingNoticeModal");
+    const closeButton = document.getElementById("closeLoadingNoticeBtn");
+    const acceptButton = document.getElementById("acceptLoadingNoticeBtn");
+
+    let lastFocusedElement = null;
+
+    function openLoadingNotice() {
+      if (!modal) return;
+
+      lastFocusedElement = document.activeElement;
+      modal.hidden = false;
+      document.body.classList.add("has-open-modal");
+
+      requestAnimationFrame(() => {
+        modal.classList.add("is-visible");
+        acceptButton?.focus();
+      });
+    }
+
+    function closeLoadingNotice() {
+      if (!modal) return;
+
+      modal.classList.remove("is-visible");
+      document.body.classList.remove("has-open-modal");
+
+      window.setTimeout(() => {
+        modal.hidden = true;
+        lastFocusedElement?.focus?.();
+      }, 280);
+    }
+
+    closeButton?.addEventListener("click", closeLoadingNotice);
+    acceptButton?.addEventListener("click", closeLoadingNotice);
+
+    modal?.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        closeLoadingNotice();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        modal &&
+        !modal.hidden
+      ) {
+        closeLoadingNotice();
+      }
+    });
+
+    /*
+      El splash dura 3 segundos.
+      El modal aparece un poco después.
+    */
+    window.addEventListener("load", () => {
+      window.setTimeout(openLoadingNotice, 3300);
+    });
+  })();
+</script>
 </body>
+
 </html>
