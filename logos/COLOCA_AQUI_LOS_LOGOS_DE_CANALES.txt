@@ -1,0 +1,4 @@
+Coloca aquí los logos de tus canales.
+
+Ejemplo en la lista M3U:
+tvg-logo="logos/canal-1.png"

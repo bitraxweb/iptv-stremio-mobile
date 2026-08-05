@@ -1,0 +1,5 @@
+Coloca aquí tu archivo PNG con este nombre exacto:
+
+logo.png
+
+Ruta final: img/logo.png
