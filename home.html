@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stremio Premium - 30 días gratis. Disponible en España y Venezuela. Fútbol en vivo, películas y series.">
+    <title>Stremio Premium | 30 Días Gratis - España y Venezuela</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0ea5e9;
+            --accent: #f43f5e;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #ffffff;
+            --gray: #1e293b;
+            --gray-light: #64748b;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Geo-block overlay */
+        .geo-block {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.98);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .geo-block.active {
+            display: flex;
+        }
+
+        .geo-block-content {
+            max-width: 500px;
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--gray);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .geo-block-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(244, 63, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+
+        .geo-block h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .geo-block p {
+            color: var(--gray-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .flag-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .flag {
+            font-size: 2.5rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.25rem 5%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            padding: 1rem 5%;
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--light);
+        }
+
+        .brand img {
+            width: 100px;
+            height: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .mobile-menu:hover,
+        .mobile-menu:focus-visible {
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 8rem 5% 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-content {
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            max-width: 540px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-light);
+            font-weight: 500;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-mockup {
+            width: 320px;
+            height: 640px;
+            background: var(--gray);
+            border-radius: 48px;
+            padding: 12px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .screen-content {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(244, 63, 94, 0.2);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .live-indicator::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .match-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .match-league {
+            font-size: 0.75rem;
+            color: var(--gray-light);
+            margin-bottom: 12px;
+        }
+
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .team {
+            text-align: center;
+            flex: 1;
+        }
+
+        .team-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .team-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .vs {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--secondary);
+            padding: 0 15px;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .match-time {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--gray-light);
+        }
+
+        /* Features */
+        .features {
+            padding: 6rem 5%;
+            background: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .feature-text {
+            color: var(--gray-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Football Section */
+        .football {
+            padding: 6rem 5%;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+        }
+
+        .football-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .football-content h2 {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .football-content h2 span {
+            color: var(--secondary);
+        }
+
+        .football-content > p {
+            font-size: 1.125rem;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+        }
+
+        .leagues {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .league-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .league-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateX(8px);
+        }
+
+        .league-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .league-name {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .league-quality {
+            padding: 0.25rem 0.75rem;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .football-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background: var(--gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-box-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box-label {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Download Section */
+        .download {
+            padding: 6rem 5%;
+            background: var(--darker);
+        }
+
+        .download-box {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--gray);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .download-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 2rem;
+            color: white;
+        }
+
+        .download h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .download > p {
+            font-size: 1.125rem;
+            color: var(--gray-light);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            margin-bottom: 2rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+
+        .download-features {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .download-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--gray-light);
+        }
+
+        .download-feature i {
+            color: var(--success);
+            font-size: 1.125rem;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 6rem 5%;
+            background: var(--dark);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background: var(--gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .faq-item.active .faq-icon {
+            background: var(--primary);
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s;
+            padding: 0 1.5rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .faq-answer p {
+            color: var(--gray-light);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem 5% 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--light);
+        }
+
+        .footer-brand img {
+            width: 100px;
+            height: 36px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--light);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--gray-light);
+            font-size: 0.875rem;
+        }
+
+        .available-countries {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .country-flag {
+            font-size: 1.5rem;
+        }
+
+        /* Bottom download menu */
+        .download-dock {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            body {
+                padding-bottom: calc(82px + env(safe-area-inset-bottom));
+            }
+
+            header,
+            header.scrolled {
+                padding: 0.85rem 4%;
+            }
+
+            nav {
+                position: relative;
+            }
+
+            .brand img {
+                width: 90px;
+                height: auto;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                min-height: auto;
+                padding: 7.5rem 5% 4.5rem;
+                text-align: center;
+            }
+
+            .hero-description {
+                margin: 0 auto 2rem;
+            }
+
+            .hero-stats,
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .phone-mockup {
+                width: 260px;
+                height: 520px;
+            }
+
+            .football-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: calc(100% + 0.85rem);
+                left: -4.5%;
+                right: -4.5%;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: 0.75rem 4%;
+                background: rgba(15, 23, 42, 0.98);
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 18px 35px rgba(0, 0, 0, 0.32);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                pointer-events: none;
+                transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
+            }
+
+            .nav-links.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.85rem 0.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+
+            .nav-links li:last-child a {
+                border-bottom: 0;
+            }
+
+            .mobile-menu {
+                display: inline-flex;
+            }
+
+            .download-dock {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1200;
+                display: flex;
+                align-items: center;
+                gap: 0.85rem;
+                padding: 0.75rem max(4%, env(safe-area-inset-left)) calc(0.75rem + env(safe-area-inset-bottom)) max(4%, env(safe-area-inset-right));
+                background: rgba(15, 23, 42, 0.96);
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
+                box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.35);
+                backdrop-filter: blur(16px);
+            }
+
+            .download-dock-icon {
+                width: 42px;
+                height: 42px;
+                flex: 0 0 42px;
+                display: grid;
+                place-items: center;
+                border-radius: 12px;
+                font-size: 1.35rem;
+                color: white;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+            }
+
+            .download-dock-copy {
+                min-width: 0;
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                line-height: 1.25;
+            }
+
+            .download-dock-copy strong {
+                font-size: 0.95rem;
+            }
+
+            .download-dock-copy span {
+                overflow: hidden;
+                color: #94a3b8;
+                font-size: 0.75rem;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .download-dock-button {
+                flex: 0 0 auto;
+                padding: 0.75rem 1rem;
+                border-radius: 11px;
+                color: white;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                text-decoration: none;
+                font-size: 0.875rem;
+                font-weight: 700;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .geo-block {
+                padding: 1rem;
+            }
+
+            .geo-block-content {
+                padding: 2.25rem 1.25rem;
+                border-radius: 20px;
+            }
+
+            .hero {
+                gap: 2.5rem;
+                padding: 6.75rem 1rem 3.5rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 10vw, 2.65rem);
+            }
+
+            .hero-description {
+                font-size: 1rem;
+                line-height: 1.65;
+            }
+
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .stat {
+                padding: 0.75rem 0.25rem;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.035);
+            }
+
+            .stat-value {
+                font-size: clamp(1.15rem, 6vw, 1.55rem);
+            }
+
+            .stat-label {
+                font-size: 0.7rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.95rem 1rem;
+            }
+
+            .phone-mockup {
+                width: min(260px, 82vw);
+                height: auto;
+                aspect-ratio: 1 / 2;
+                border-radius: 38px;
+                padding: 9px;
+            }
+
+            .phone-screen {
+                border-radius: 31px;
+            }
+
+            .features,
+            .football,
+            .download,
+            .faq {
+                padding: 4rem 1rem;
+            }
+
+            .section-header {
+                margin-bottom: 2.5rem;
+            }
+
+            .section-title,
+            .football-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-subtitle,
+            .football-content > p {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .football-grid {
+                gap: 2.5rem;
+            }
+
+            .football-stats {
+                gap: 0.75rem;
+            }
+
+            .stat-box {
+                padding: 1.1rem 0.5rem;
+            }
+
+            .stat-box-value {
+                font-size: 1.75rem;
+            }
+
+            .league-item {
+                gap: 0.75rem;
+                padding: 0.85rem;
+            }
+
+            .league-name {
+                font-size: 0.9rem;
+            }
+
+            .download-box {
+                padding: 3rem 1.25rem;
+                border-radius: 22px;
+            }
+
+            .download-icon {
+                width: 72px;
+                height: 72px;
+                font-size: 2rem;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .download-features {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+                width: fit-content;
+                margin: 0 auto;
+            }
+
+            .faq-question {
+                padding: 1.2rem 1rem;
+            }
+
+            .faq-answer,
+            .faq-item.active .faq-answer {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            footer {
+                padding: 2.5rem 1rem 2rem;
+            }
+
+            .footer-content,
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-links {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem 1rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .download-dock {
+                gap: 0.6rem;
+                padding-left: 0.65rem;
+                padding-right: 0.65rem;
+            }
+
+            .download-dock-icon {
+                display: none;
+            }
+
+            .download-dock-button {
+                padding-inline: 0.8rem;
+            }
+
+            .match-card {
+                padding: 14px;
+            }
+
+            .screen-content {
+                padding: 15px;
+            }
+
+            .team-name {
+                font-size: 0.72rem;
+            }
+
+            .vs {
+                padding: 0 8px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Geo Block -->
+    <div class="geo-block" id="geoBlock">
+        <div class="geo-block-content">
+            <div class="geo-block-icon">
+                <i class="fas fa-globe"></i>
+            </div>
+            <h2>Servicio No Disponible</h2>
+            <p>Stremio Premium solo está disponible para usuarios en España y Venezuela.</p>
+            <div class="flag-container">
+                <span class="flag">🇸</span>
+                <span class="flag">🇻🇪</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="brand">
+                <img src="https://iptv-stremio-mobile.netlify.app/img/logo.png" alt="Stremio">
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#caracteristicas">Características</a></li>
+                <li><a href="#futbol">Fútbol</a></li>
+                <li><a href="#descargar">Descargar</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <button class="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content fade-in">
+  
+            <h1>
+                Entretenimiento <span>sin límites</span> en tu Android
+            </h1>
+            <p class="hero-description">
+                Disfruta fútbol en vivo, películas, series y más de 10,000 canales en HD. 
+                Prueba Premium gratis por 120 días. 
+            </p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value">10,000+</span>
+                    <span class="stat-label">Canales HD</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">500+</span>
+                    <span class="stat-label">Partidos/Mes</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">0</span>
+                    <span class="stat-label">Buffering</span>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="#descargar" class="btn btn-primary">
+                    <i class="fab fa-android"></i>
+                    Descargar para Android
+                </a>
+                <a href="#caracteristicas" class="btn btn-secondary">
+                    Ver más
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual fade-in">
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span>
+                    </div>
+                    <div class="screen-content">
+                        <div class="live-indicator">EN VIVO</div>
+                        
+                        <div class="match-card">
+                            <div class="match-league">Champions League</div>
+                            <div class="match-teams">
+                                <div class="team">
+                                    <div class="team-icon"></div>
+                                    <div class="team-name">Real Madrid</div>
+                                </div>
+                                <div class="vs">VS</div>
+                                <div class="team">
+                                    <div class="team-icon">🔵</div>
+                                    <div class="team-name">Barcelona</div>
+                                </div>
+                            </div>
+                            <div class="score">2 - 1</div>
+                            <div class="match-time">78' Segundo Tiempo</div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; text-align: center; font-size: 0.75rem;">
+                                <i class="fas fa-tv" style="display: block; margin-bottom: 5px;"></i>
+                                Movistar
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; text-align: center; font-size: 0.75rem;">
+                                <i class="fas fa-tv" style="display: block; margin-bottom: 5px;"></i>
+                                ESPN
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Características</span>
+                <h2 class="section-title">Todo en una sola app</h2>
+                <p class="section-subtitle">
+                    Diseñada para ofrecerte la mejor experiencia de entretenimiento
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <h3 class="feature-title">+10,000 Canales</h3>
+                    <p class="feature-text">
+                        Canales nacionales e internacionales en HD y 4K. Deportes, noticias y entretenimiento 24/7.
+                    </p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3 class="feature-title">Fútbol en Vivo</h3>
+                    <p class="feature-text">
+                        La Liga, Champions, Premier League y más. Sin cortes ni buffering.
+                    </p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="feature-title">Películas y Series</h3>
+                    <p class="feature-text">
+                        Catálogo actualizado diariamente con los últimos estrenos del cine.
+                    </p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">Reproducción Rápida</h3>
+                    <p class="feature-text">
+                        Servidores optimizados. Inicia en menos de 2 segundos.
+                    </p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">100% Seguro</h3>
+                    <p class="feature-text">
+                        Conexión encriptada y verificada. Sin virus ni malware.
+                    </p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Multi-Dispositivo</h3>
+                    <p class="feature-text">
+                        Usa tu cuenta en hasta 3 dispositivos simultáneamente.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Football -->
+    <section class="football" id="futbol">
+        <div class="container">
+            <div class="football-grid">
+                <div class="football-content fade-in">
+                    <span class="section-tag">Deportes</span>
+                    <h2>
+                        Vive el fútbol <span>sin interrupciones</span>
+                    </h2>
+                    <p>
+                        Todos los deportes en vivo con la mejor calidad de imagen.
+                    </p>
+
+                    <div class="leagues">
+                        <div class="league-item">
+                            <div class="league-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <span class="league-name">UEFA Champions League</span>
+                            <span class="league-quality">HD</span>
+                        </div>
+                        <div class="league-item">
+                            <div class="league-icon">
+                                <i class="fas fa-futbol"></i>
+                            </div>
+                            <span class="league-name">La Liga Santander</span>
+                            <span class="league-quality">4K</span>
+                        </div>
+                        <div class="league-item">
+                            <div class="league-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <span class="league-name">Premier League</span>
+                            <span class="league-quality">HD</span>
+                        </div>
+                        <div class="league-item">
+                            <div class="league-icon">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <span class="league-name">Copa Libertadores</span>
+                            <span class="league-quality">HD</span>
+                        </div>
+                    </div>
+
+                    <a href="#descargar" class="btn btn-primary">
+                        Ver Partidos Ahora
+                    </a>
+                </div>
+
+                <div class="football-stats fade-in">
+                    <div class="stat-box">
+                        <div class="stat-box-value">50+</div>
+                        <div class="stat-box-label">Deportes</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">500+</div>
+                        <div class="stat-box-label">Partidos/Mes</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">HD/4K</div>
+                        <div class="stat-box-label">Calidad</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">24/7</div>
+                        <div class="stat-box-label">Soporte</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download -->
+    <section class="download" id="descargar">
+        <div class="download-box fade-in">
+            <div class="download-icon">
+                <i class="fab fa-android"></i>
+            </div>
+            <h2>Descarga Stremio Premium</h2>
+            <p>
+                Comienza tu prueba gratis de 30 días. Sin tarjeta de crédito. 
+                Disponible solo en España y Venezuela.
+            </p>
+            
+            <a href="#" class="download-btn" onclick="downloadApp(event)">
+                <i class="fab fa-android" style="font-size: 2rem;"></i>
+                <div style="text-align: left;">
+                    <div style="font-size: 0.875rem; opacity: 0.9;">Descargar para</div>
+                    <div style="font-size: 1.5rem;">Android</div>
+                </div>
+            </a>
+
+            <div class="download-features">
+                <div class="download-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Sin tarjeta</span>
+                </div>
+                <div class="download-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>120 días gratis</span>
+                </div>
+                <div class="download-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Soporte 24/7</span>
+                </div>
+                <div class="download-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Verificado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Preguntas Frecuentes</h2>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item fade-in">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Necesito tarjeta de crédito?</span>
+                        <div class="faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, puedes disfrutar 120 días gratis sin proporcionar datos de pago.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Puedo ver en varios dispositivos?</span>
+                        <div class="faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, hasta 3 dispositivos simultáneos con una sola cuenta.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Funciona sin VPN?</span>
+                        <div class="faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, funciona perfectamente  sin VPN.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>¿Es legal y seguro?</span>
+                        <div class="faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, Stremio es legal y nuestra versión Premium está verificada y segura.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="https://iptv-stremio-mobile.netlify.app/img/logo.png" alt="Stremio">
+            </div>
+            <div class="footer-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#caracteristicas">Características</a>
+                <a href="#futbol">Fútbol</a>
+                <a href="#descargar">Descargar</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Stremio Premium. Todos los derechos reservados.</p>
+     
+        </div>
+    </footer>
+
+    <aside class="download-dock" aria-label="Descargar aplicación">
+        <div class="download-dock-icon" aria-hidden="true">
+            <i class="fab fa-android"></i>
+        </div>
+        <div class="download-dock-copy">
+            <strong>Stremio Premium</strong>
+            <span>Android · 120 días gratis</span>
+        </div>
+        <a href="#descargar" class="download-dock-button">Descargar app</a>
+    </aside>
+
+    <script>
+        // Geo-location check
+        async function checkLocation() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const countryCode = data.country_code;
+                
+                if (countryCode !== 'ES' && countryCode !== 'VE') {
+                    document.getElementById('geoBlock').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            } catch (error) {
+                console.log('No se pudo verificar la ubicación');
+            }
+        }
+
+        // Check location on load
+        window.addEventListener('load', checkLocation);
+
+        // Header scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+        // FAQ Toggle
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            document.querySelectorAll('.faq-item').forEach(faq => {
+                faq.classList.remove('active');
+            });
+            
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        // Download handler
+        function downloadApp(e) {
+            e.preventDefault();
+            alert('Aquí iría la descarga del APK. Reemplaza con tu link real.');
+            // window.location.href = 'YOUR_DOWNLOAD_LINK';
+        }
+
+        // Mobile menu
+        function toggleMenu() {
+            const nav = document.querySelector('.nav-links');
+            const button = document.querySelector('.mobile-menu');
+            const icon = button.querySelector('i');
+            const isOpen = nav.classList.toggle('open');
+
+            button.setAttribute('aria-expanded', isOpen);
+            button.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+            icon.classList.toggle('fa-bars', !isOpen);
+            icon.classList.toggle('fa-times', isOpen);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    const nav = document.querySelector('.nav-links');
+                    const button = document.querySelector('.mobile-menu');
+                    const icon = button.querySelector('i');
+                    nav.classList.remove('open');
+                    button.setAttribute('aria-expanded', 'false');
+                    button.setAttribute('aria-label', 'Abrir menú');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 968) {
+                const nav = document.querySelector('.nav-links');
+                const button = document.querySelector('.mobile-menu');
+                const icon = button.querySelector('i');
+                nav.classList.remove('open');
+                button.setAttribute('aria-expanded', 'false');
+                button.setAttribute('aria-label', 'Abrir menú');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        });
+    </script>
+</body>
+</html>
