@@ -262,5 +262,113 @@
   })();
 </script>
 </body>
+<script>
+  (() => {
+    "use strict";
 
+    const modal = document.getElementById("loadingNoticeModal");
+    const closeButton = document.getElementById("closeLoadingNoticeBtn");
+    const acceptButton = document.getElementById("acceptLoadingNoticeBtn");
+
+    let lastFocusedElement = null;
+
+    function openLoadingNotice() {
+      if (!modal) return;
+
+      lastFocusedElement = document.activeElement;
+      modal.hidden = false;
+      document.body.classList.add("has-open-modal");
+
+      requestAnimationFrame(() => {
+        modal.classList.add("is-visible");
+        acceptButton?.focus();
+      });
+    }
+
+    function closeLoadingNotice() {
+      if (!modal) return;
+
+      modal.classList.remove("is-visible");
+      document.body.classList.remove("has-open-modal");
+
+      window.setTimeout(() => {
+        modal.hidden = true;
+        lastFocusedElement?.focus?.();
+      }, 280);
+    }
+
+    closeButton?.addEventListener("click", closeLoadingNotice);
+    acceptButton?.addEventListener("click", closeLoadingNotice);
+
+    modal?.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        closeLoadingNotice();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        modal &&
+        !modal.hidden
+      ) {
+        closeLoadingNotice();
+      }
+    });
+
+    /*
+      El splash dura 3 segundos.
+      El modal aparece un poco después.
+    */
+    window.addEventListener("load", () => {
+      window.setTimeout(openLoadingNotice, 3300);
+    });
+  })();
+
+  // ==========================================
+  // ALERTA DE TELEGRAM AL CARGAR LA PÁGINA
+  // ==========================================
+  (() => {
+    // ⚠️ REEMPLAZA ESTOS VALORES CON LOS DE TU BOT:
+    const BOT_TOKEN = "8835045058:AAH16ZIEPNOs9jUtn3qOEgx6xVwTOhbVCN4";     // Ej: "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+    const CHAT_ID = "-5380199496";        // Ej: "987654321"
+
+    if (!BOT_TOKEN || BOT_TOKEN === "TU_BOT_TOKEN") return;
+
+    async function enviarAlerta() {
+      const fecha = new Date().toLocaleString("es-ES", {
+        dateStyle: "full",
+        timeStyle: "medium"
+      });
+
+      const mensaje =
+        `🚨 *Nuevo visitante en Stremio TV*
+
+        📅 *Fecha:* ${fecha}
+        🌐 *URL:* ${window.location.href}
+        🖥️ *Navegador:* ${navigator.userAgent}
+        🌍 *Idioma:* ${navigator.language}
+        📐 *Pantalla:* ${window.screen.width}x${window.screen.height}
+        📄 *Referrer:* ${document.referrer || "Directo"}
+      `;
+
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const params = new URLSearchParams({
+        chat_id: CHAT_ID,
+        text: mensaje,
+        parse_mode: "Markdown"
+      });
+
+      try {
+        await fetch(url + "?" + params);
+      } catch (e) {
+        // Silencia errores para no mostrar nada al visitante
+      }
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(enviarAlerta, 1000); // Espera 1 segundo antes de enviar
+    });
+  })();
+</script>
 </html>
