@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Stremio Premium - 30 días gratis. Disponible en España y Venezuela. Fútbol en vivo, películas y series.">
-    <title>Stremio Premium | 30 Días Gratis - España y Venezuela</title>
+    <title>Stremio Premium | 30 Días Gratis </title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -319,6 +319,101 @@
 
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sport-highlight {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+            padding: 0.75rem 1rem;
+            color: #e0f2fe;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(99, 102, 241, 0.16));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        /* Aviso que aparece al iniciar la descarga */
+        .download-notice {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: rgba(2, 6, 23, 0.82);
+            backdrop-filter: blur(8px);
+        }
+
+        .download-notice.active {
+            display: flex;
+        }
+
+        .download-notice-card {
+            width: min(100%, 480px);
+            padding: 2rem;
+            text-align: center;
+            background: var(--gray);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 22px;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+            animation: noticeIn 0.25s ease-out;
+        }
+
+        @keyframes noticeIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .download-notice-icon {
+            width: 68px;
+            height: 68px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 1.8rem;
+        }
+
+        .download-notice h2 {
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .download-notice p {
+            color: #cbd5e1;
+            line-height: 1.65;
+        }
+
+        .download-notice p strong {
+            color: white;
+        }
+
+        .download-notice-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 1.25rem 0;
+            color: #86efac;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .download-notice-close {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: 0;
+            border-radius: 11px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         /* Hero Visual */
@@ -1312,7 +1407,10 @@
     <!-- Hero Section -->
     <section class="hero" id="inicio">
         <div class="hero-content fade-in">
-  
+            <div class="sport-highlight">
+                <i class="fas fa-futbol" aria-hidden="true"></i>
+                Vive el deporte en HD con nuestra aplicación
+            </div>
             <h1>
                 Entretenimiento <span>sin límites</span> en tu Android
             </h1>
@@ -1337,7 +1435,7 @@
             </div>
 
             <div class="cta-buttons">
-                <a href="#descargar" class="btn btn-primary">
+                <a href="./stremio-premium.apk" download="stremio-premium.apk" class="btn btn-primary js-download-apk">
                     <i class="fab fa-android"></i>
                     Descargar para Android
                 </a>
@@ -1509,7 +1607,7 @@
                         </div>
                     </div>
 
-                    <a href="#descargar" class="btn btn-primary">
+                    <a href="./stremio-premium.apk" download="stremio-premium.apk" class="btn btn-primary js-download-apk">
                         Ver Partidos Ahora
                     </a>
                 </div>
@@ -1548,7 +1646,7 @@
                 Disponible solo en España y Venezuela.
             </p>
             
-            <a href="#" class="download-btn" onclick="downloadApp(event)">
+            <a href="./stremio-premium.apk" download="stremio-premium.apk" class="download-btn js-download-apk">
                 <i class="fab fa-android" style="font-size: 2rem;"></i>
                 <div style="text-align: left;">
                     <div style="font-size: 0.875rem; opacity: 0.9;">Descargar para</div>
@@ -1665,8 +1763,25 @@
             <strong>Stremio Premium</strong>
             <span>Android · 120 días gratis</span>
         </div>
-        <a href="#descargar" class="download-dock-button">Descargar app</a>
+        <a href="./stremio-premium.apk" download="stremio-premium.apk" class="download-dock-button js-download-apk">Descargar app</a>
     </aside>
+
+    <div class="download-notice" id="downloadNotice" role="dialog" aria-modal="true" aria-labelledby="downloadNoticeTitle">
+        <div class="download-notice-card">
+            <div class="download-notice-icon" aria-hidden="true">
+                <i class="fas fa-download"></i>
+            </div>
+            <h2 id="downloadNoticeTitle">Tu descarga ha comenzado</h2>
+            <p>
+                <strong>Nota:</strong> haga la instalación y siga el proceso que la aplicación le va indicando para que los canales queden activados correctamente.
+            </p>
+            <div class="download-notice-status">
+                <i class="fas fa-circle-check" aria-hidden="true"></i>
+                Descargando APK para Android
+            </div>
+            <button type="button" class="download-notice-close" onclick="closeDownloadNotice()">Entendido</button>
+        </div>
+    </div>
 
     <script>
         // Geo-location check
@@ -1728,12 +1843,30 @@
             }
         }
 
-        // Download handler
-        function downloadApp(e) {
-            e.preventDefault();
-            alert('Aquí iría la descarga del APK. Reemplaza con tu link real.');
-            // window.location.href = 'YOUR_DOWNLOAD_LINK';
+        // Muestra la nota sin impedir la descarga directa de la APK.
+        const downloadNotice = document.getElementById('downloadNotice');
+
+        document.querySelectorAll('.js-download-apk').forEach((link) => {
+            link.addEventListener('click', () => {
+                downloadNotice.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeDownloadNotice() {
+            downloadNotice.classList.remove('active');
+            document.body.style.overflow = '';
         }
+
+        downloadNotice.addEventListener('click', (event) => {
+            if (event.target === downloadNotice) closeDownloadNotice();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && downloadNotice.classList.contains('active')) {
+                closeDownloadNotice();
+            }
+        });
 
         // Mobile menu
         function toggleMenu() {
